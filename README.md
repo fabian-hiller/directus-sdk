@@ -41,10 +41,31 @@ npm install https://github.com/fabian-hiller/directus-sdk/raw/main/directus-sdk-
 
 ### Define your collections
 
-First you define the items of your collections. The types `Item`, `Relation`, `Json` and `ItemKey` provided by the SDK ensure complete type safety.
+First you define the items of your collections. The types `Item`, `Relation`, `ItemKey` and `Json` helps you to ensure type safety. I expect to improve the types in the future to reach full type safety at some point. Until then, you must follow the rules below.
+
+Make sure that the type definition corresponds exactly to your database. For example, there are no optional or undefined fields in an SQL database (marked with a question mark in TypeScript). Your field should be optional `null` instead. Then you have to make sure that you don't optionally specify the type of the foreign key in relationships. The SDK automatically detects from your query whether the foreign key or the actual data is returned.
+
+To make it very simple, the type definition of a field must match one of the 8 options below. A mix can currently still lead to bugs.
 
 ```ts
-import { Item, Relation, Json, ItemKey, DirectusUserItem } from 'directus-sdk';
+import { Item, Relation, ItemKey, Json } from 'directus-sdk';
+
+type MyItem = Item<{
+  option1: ItemKey;
+  option2: string | null;
+  option3: number | null;
+  option4: boolean | null;
+  option5: string[] | null;
+  option6: Json<{}> | null;
+  option7: Relation<OtherItem> | null;
+  option8: Relation<OtherItem>[];
+}>;
+```
+
+#### Practical example
+
+```ts
+import { Item, Relation, ItemKey, Json, DirectusUserItem } from 'directus-sdk';
 
 type PostItem = Item<{
   id: ItemKey;
