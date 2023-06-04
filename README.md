@@ -73,7 +73,7 @@ const publicClient = getPublicClient<MyCollections>({
   url: 'https://example.com',
 });
 
-const adminClient = getPublicClient<MyCollections>({
+const adminClient = getAdminClient<MyCollections>({
   url: 'https://example.com',
   staticToken: 'ADMIN_TOKEN_HERE',
 });
