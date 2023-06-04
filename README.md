@@ -33,7 +33,7 @@ In the following I explain how the SDK works and point out further advantages.
 
 > Note: At this time, the SDK is not yet available via npm, yarn or pnpm.
 
-## Define your collections
+### Define your collections
 
 First you define the items of your collections. The types `Item`, `Relation`, `Json` and `ItemKey` provided by the SDK ensure complete type safety.
 
@@ -62,7 +62,7 @@ type MyCollections = {
 };
 ```
 
-## Create a Directus client
+### Create a Directus client
 
 Next, you create a Directus client. You decide whether it is a public, admin or user client. The public client can only access public content of the CMS. The admin client can access everything using a static token of an admin and the user client can only access the content for which the logged in user has the necessary permissions. The previously created type of the collections is passed as generic.
 
@@ -85,11 +85,11 @@ const userClient = getUserClient<MyCollections>({
 });
 ```
 
-## Call a function
+### Call a function
 
 The SDK provides functions for most of the Directus CMS endpoints. The previously created client is passed to each function as the first parameter. Its information is used to call the CMS and make the function type-safe.
 
-### Auth functions
+#### Auth functions
 
 The auth functions are usually called with a user client.
 
@@ -99,7 +99,7 @@ The auth functions are usually called with a user client.
 - requestPassword
 - resetPassword
 
-#### Example
+##### Example
 
 After a user submits the login form, the following function can be used for login.
 
@@ -112,7 +112,7 @@ await login(userClient, {
 });
 ```
 
-### Items functions
+#### Items functions
 
 The items functions map all CRUD operations that the endpoints of the CMS allow. Using [function overloads](https://www.typescriptlang.org/docs/handbook/2/functions.html#function-overloads), `updateItems` can update multiple items based on primary keys, multiple items based on a query, or multiple items in a batch and all in a type-safe way. Alternatively, we could provide a single function for each operation. However, this would complicate the naming.
 
@@ -125,7 +125,7 @@ The items functions map all CRUD operations that the endpoints of the CMS allow.
 - deleteItem
 - deleteItems
 
-#### Special feature
+##### Special feature
 
 Using a new syntax of the `fields` query option, the specification of the fields to be requested as well as the return value is completely type safe. Even relationships are fully taken into account.
 
@@ -148,7 +148,7 @@ const post = await readItem(publicClient, 'posts', 'PRIMARY_KEY', {
 });
 ```
 
-### Users functions
+#### Users functions
 
 Other endpoints such as `/users` can be built on top of the items functions to prevent the same code from being written multiple times.
 
