@@ -31,7 +31,13 @@ This SDK builds on existing web APIs like the Fetch API and therefore has no dep
 
 In the following I explain how the SDK works and point out further advantages.
 
-> Note: At this time, the SDK is not yet available via npm, yarn or pnpm.
+### Install the SDK
+
+At this time, the SDK is not yet available via npm, yarn or pnpm. However, I have added an installable version to the GitHub repository.
+
+```bash
+npm install https://github.com/fabian-hiller/directus-sdk/raw/main/directus-sdk-0.1.0.tgz
+```
 
 ### Define your collections
 
