@@ -9,8 +9,8 @@ export type FieldsQuery<TItem extends Item<ItemData>> = {
   [TKey in keyof Omit<TItem, '__item__' | '__relation__'>]?: Maybe<
     TItem[TKey] extends Relation<Item<ItemData>>[]
       ? true | '*' | FieldsQuery<TItem[TKey][number]>
-      : TItem[TKey] extends Relation<Item<ItemData>>
-      ? true | '*' | FieldsQuery<TItem[TKey]>
+      : TItem[TKey] extends Relation<Item<ItemData>> | null
+      ? true | '*' | FieldsQuery<NonNullable<TItem[TKey]>>
       : true
   >;
 };

@@ -30,7 +30,12 @@ export type FilterItemByFields<TItem, TFields> =
             TFields[TKey1] extends Record<string, any>
             ? TItem[TKey1] extends Relation<Item<ItemData>>[]
               ? FilterItemByFields<TItem[TKey1][number], TFields[TKey1]>[]
-              : FilterItemByFields<TItem[TKey1], TFields[TKey1]>
+              : TItem[TKey1] extends Relation<Item<ItemData>>
+              ? FilterItemByFields<TItem[TKey1], TFields[TKey1]>
+              : FilterItemByFields<
+                  NonNullable<TItem[TKey1]>,
+                  TFields[TKey1]
+                > | null
             : // If value of field is a wildcard, filter by top level fields
             TFields[TKey1] extends '*'
             ? TItem[TKey1] extends Relation<Item<ItemData>>[]
@@ -38,9 +43,11 @@ export type FilterItemByFields<TItem, TFields> =
                   TItem[TKey1][number],
                   TopLevelFields<TItem[TKey1][number]>
                 >[]
+              : TItem[TKey1] extends Relation<Item<ItemData>>
+              ? FilterItemByFields<TItem[TKey1], TopLevelFields<TItem[TKey1]>>
               : FilterItemByFields<
-                  TItem[TKey1],
-                  TopLevelFields<TItem[TKey1]>
+                  NonNullable<TItem[TKey1]>,
+                  TopLevelFields<NonNullable<TItem[TKey1]>>
                 > | null
             : // If value of field is "true", return value of item
             TFields[TKey1] extends true
