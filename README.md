@@ -120,11 +120,11 @@ The SDK provides functions for most of the Directus CMS endpoints. The previousl
 
 The auth functions are usually called with a user client.
 
-- login
-- logout
-- refresh
-- requestPassword
-- resetPassword
+- [login](https://github.com/fabian-hiller/directus-sdk/blob/main/src/auth/login.ts)
+- [logout](https://github.com/fabian-hiller/directus-sdk/blob/main/src/auth/logout.ts)
+- [refresh](https://github.com/fabian-hiller/directus-sdk/blob/main/src/auth/refresh.ts)
+- [requestPassword](https://github.com/fabian-hiller/directus-sdk/blob/main/src/auth/requestPassword.ts)
+- [resetPassword](https://github.com/fabian-hiller/directus-sdk/blob/main/src/auth/resetPassword.ts)
 
 ##### Example
 
@@ -143,14 +143,14 @@ await login(userClient, {
 
 The items functions map all CRUD operations that the endpoints of the CMS allow. Using [function overloads](https://www.typescriptlang.org/docs/handbook/2/functions.html#function-overloads), `updateItems` can update multiple items based on primary keys, multiple items based on a query, or multiple items in a batch and all in a type-safe way. Alternatively, we could provide a single function for each operation. However, this would complicate the naming.
 
-- createItem
-- createItems
-- readItem
-- readItems
-- updateItem
-- updateItems
-- deleteItem
-- deleteItems
+- [createItem](https://github.com/fabian-hiller/directus-sdk/blob/main/src/items/createItem.ts)
+- [createItems](https://github.com/fabian-hiller/directus-sdk/blob/main/src/items/createItems.ts)
+- [readItem](https://github.com/fabian-hiller/directus-sdk/blob/main/src/items/readItem.ts)
+- [readItems](https://github.com/fabian-hiller/directus-sdk/blob/main/src/items/readItems.ts)
+- [updateItem](https://github.com/fabian-hiller/directus-sdk/blob/main/src/items/updateItem.ts)
+- [updateItems](https://github.com/fabian-hiller/directus-sdk/blob/main/src/items/updateItems.ts)
+- [deleteItem](https://github.com/fabian-hiller/directus-sdk/blob/main/src/items/deleteItem.ts)
+- [deleteItems](https://github.com/fabian-hiller/directus-sdk/blob/main/src/items/deleteItems.ts)
 
 ##### Special feature
 
@@ -179,13 +179,13 @@ const post = await readItem(publicClient, 'posts', 'PRIMARY_KEY', {
 
 Other endpoints such as `/users` can be built on top of the items functions to prevent the same code from being written multiple times.
 
-- createUser
-- createUsers
-- readCurrentUser
-- readUser
-- readUsers
-- updateCurrentUser
-- updateUser
-- updateUsers
-- deleteUser
-- deleteUsers
+- [createUser](https://github.com/fabian-hiller/directus-sdk/blob/main/src/users/createUser.ts)
+- [createUsers](https://github.com/fabian-hiller/directus-sdk/blob/main/src/users/createUsers.ts)
+- [readCurrentUser](https://github.com/fabian-hiller/directus-sdk/blob/main/src/users/readCurrentUser.ts)
+- [readUser](https://github.com/fabian-hiller/directus-sdk/blob/main/src/users/readUser.ts)
+- [readUsers](https://github.com/fabian-hiller/directus-sdk/blob/main/src/users/readUsers.ts)
+- [updateCurrentUser](https://github.com/fabian-hiller/directus-sdk/blob/main/src/users/updateCurrentUser.ts)
+- [updateUser](https://github.com/fabian-hiller/directus-sdk/blob/main/src/users/updateUser.ts)
+- [updateUsers](https://github.com/fabian-hiller/directus-sdk/blob/main/src/users/updateUsers.ts)
+- [deleteUser](https://github.com/fabian-hiller/directus-sdk/blob/main/src/users/deleteUser.ts)
+- [deleteUsers](https://github.com/fabian-hiller/directus-sdk/blob/main/src/users/deleteUsers.ts)
