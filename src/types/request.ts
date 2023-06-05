@@ -14,6 +14,9 @@ export type ItemDataRequest<TItem extends Item<ItemData>> = {
     : // If value is a relation, return item key or item data
     TItem[TKey] extends Relation<Item<ItemData>>
     ? ItemKey | ItemDataRequest<TItem[TKey]>
+    : // If value is a relation or null, return item key, item data or null
+    TItem[TKey] extends Relation<Item<ItemData>> | null
+    ? ItemKey | ItemDataRequest<NonNullable<TItem[TKey]>> | null
     : // If value is JSON, return it without __json__
     TItem[TKey] extends Json<JsonData>
     ? Omit<TItem[TKey], '__json__'>
