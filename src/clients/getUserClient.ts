@@ -2,10 +2,10 @@
 import { refresh } from '../auth';
 import type {
   TokenData,
-  Client,
   ClientOptions,
   TokenActions,
   Collections,
+  UserClient,
 } from '../types';
 
 // Create global token promise map
@@ -27,7 +27,7 @@ export function getUserClient<TCollections extends Collections = {}>({
   url,
   getTokens,
   setTokens,
-}: UserClientOptions): Client<TCollections> {
+}: UserClientOptions): UserClient<TCollections> {
   return {
     url,
     getToken: async () => {
@@ -71,5 +71,7 @@ export function getUserClient<TCollections extends Collections = {}>({
       // Otherwise return null
       return null;
     },
+    getTokens,
+    setTokens,
   };
 }
