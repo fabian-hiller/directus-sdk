@@ -66,7 +66,7 @@ export type DirectusFileItem = Item<{
   id: ItemKey;
   location: string | null;
   metadata: Json<Record<string, any>>;
-  modified_by: string;
+  modified_by: Relation<DirectusUserItem>;
   modified_on: string;
   storage: string;
   tags: string[];
