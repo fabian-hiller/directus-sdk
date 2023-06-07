@@ -41,31 +41,37 @@ export function getUserClient<TCollections extends Collections = {}>({
 
       // Otherwise return new access token if refresh token cookie is available
       if (refresh_token) {
-        // Create token promise and response variable
-        let tokenPromise = tokenPromiseMap.get(refresh_token);
-        let tokenData: TokenData;
+        try {
+          // Create token promise and response variable
+          let tokenPromise = tokenPromiseMap.get(refresh_token);
+          let tokenData: TokenData;
 
-        // If token promise has not been created yet, create it
-        if (!tokenPromise) {
-          // Execute refresh request and get token promise
-          tokenPromise = refresh({ url, getTokens, setTokens });
+          // If token promise has not been created yet, create it
+          if (!tokenPromise) {
+            // Execute refresh request and get token promise
+            tokenPromise = refresh({ url, getTokens, setTokens });
 
-          // Add token promise to map to not run it twice
-          tokenPromiseMap.set(refresh_token, tokenPromise);
+            // Add token promise to map to not run it twice
+            tokenPromiseMap.set(refresh_token, tokenPromise);
 
-          // Await token promise to get token data
-          tokenData = await tokenPromise;
+            // Await token promise to get token data
+            tokenData = await tokenPromise;
 
-          // Delete token promise from map to free up memory
-          tokenPromiseMap.delete(refresh_token);
+            // Delete token promise from map to free up memory
+            tokenPromiseMap.delete(refresh_token);
 
-          // Otherwise just await token promise to get response
-        } else {
-          tokenData = await tokenPromise;
+            // Otherwise just await token promise to get response
+          } else {
+            tokenData = await tokenPromise;
+          }
+
+          // Return new access token
+          return tokenData.access_token;
+
+          // If an error occurred, set tokens to null
+        } catch (error) {
+          await setTokens(null);
         }
-
-        // Return new access token
-        return tokenData.access_token;
       }
 
       // Otherwise return null
