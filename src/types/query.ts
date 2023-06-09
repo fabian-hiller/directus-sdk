@@ -40,9 +40,18 @@ export type ItemQuery<TItem extends Item<ItemData>> = DataQuery<TItem> & {
 };
 
 /**
+ * Handle item keys that start with a hyphen (for desc sorting).
+ */
+export type HyphenPrefixProperties<T> = {
+  [K in keyof T as `-${string & K}`]: T[K];
+};
+
+export type MaybeHyphenPrefixed<T> = T & HyphenPrefixProperties<T>;
+
+/**
  * Value type of the sort query.
  */
-export type SortQuery<TItem extends Item<ItemData>> = {
+export type SortQuery<TItem extends MaybeHyphenPrefixed<Item<ItemData>>> = {
   [TKey in keyof Omit<TItem, '__item__' | '__relation__'>]?: Maybe<
     TItem[TKey] extends Relation<Item<ItemData>>[]
       ? true | FieldsQuery<TItem[TKey][number]>
@@ -56,7 +65,7 @@ export type SortQuery<TItem extends Item<ItemData>> = {
  * Value type of the items query.
  */
 export type ItemsQuery<TItem extends Item<ItemData>> = ItemQuery<TItem> & {
-  sort?: Maybe<SortQuery<TItem>>;
+  sort?: Maybe<SortQuery<MaybeHyphenPrefixed<TItem>>>;
   limit?: Maybe<number>;
   offset?: Maybe<number>;
   page?: Maybe<number>;

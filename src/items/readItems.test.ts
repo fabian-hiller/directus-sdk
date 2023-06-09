@@ -59,6 +59,66 @@ describe('readItems', () => {
     expect(items.map((item) => item.last_name)).toMatchObject(['Doe', 'Doe']);
   });
 
+  test('should read items with sorting asc', async () => {
+    await createItems(adminClient, 'directus_users', [
+      {
+        first_name: 'John',
+        last_name: 'Doe',
+      },
+      {
+        first_name: 'Jane',
+        last_name: 'Doe',
+      },
+    ]);
+    const [items] = await readItems(adminClient, 'directus_users', {
+      filter: {
+        last_name: {
+          _eq: 'Doe',
+        },
+      },
+      sort: {
+        first_name: true,
+      },
+    });
+    expect(items).toHaveLength(2);
+    expect(items.map((item) => item.first_name)).toContain('Jane');
+    expect(items.map((item) => item.first_name)).toContain('John');
+    expect(items.map((item) => item.first_name)).toMatchObject([
+      'Jane',
+      'John',
+    ]);
+  });
+
+  test('should read items with sorting desc', async () => {
+    await createItems(adminClient, 'directus_users', [
+      {
+        first_name: 'Jane',
+        last_name: 'Doe',
+      },
+      {
+        first_name: 'John',
+        last_name: 'Doe',
+      },
+    ]);
+    const [items] = await readItems(adminClient, 'directus_users', {
+      filter: {
+        last_name: {
+          _eq: 'Doe',
+        },
+      },
+      sort: {
+        '-first_name': true,
+      },
+    });
+    expect(items).toHaveLength(2);
+    expect(items.map((item) => item.first_name)).toContain('Jane');
+    expect(items.map((item) => item.first_name)).toContain('John');
+    expect(items.map((item) => item.first_name)).toMatchObject([
+      'John',
+      'Jane',
+    ]);
+  });
+
   test('should return only first name', async () => {
     const { id } = await createItem(adminClient, 'directus_users', {
       first_name: 'Jane',
