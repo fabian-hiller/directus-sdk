@@ -7,7 +7,7 @@ import type {
   ItemKey,
   Relation,
 } from './item';
-import type { DataQuery, ItemsQuery } from './query';
+import type { DataQuery, ItemsAggregateQuery, ItemsQuery } from './query';
 
 /**
  * Returns the top level fileds of an item.
@@ -70,12 +70,29 @@ export type FilterItemByFields<TItem, TFields> =
       };
 
 /**
+ * Filters the items aggregate data by the aggregate fields query.
+ */
+export type FilterItemsAggregateByFields<TItem, TFields> = {
+  [TKey1 in keyof TFields]: TFields[TKey1] extends '*' | true
+    ? number
+    : FilterItemsAggregateByFields<TItem, TFields[TKey1]>;
+};
+
+/**
  * Value type of the item data response.
  */
 export type ItemDataResponse<
   TItem extends Item<ItemData>,
   TQuery extends DataQuery<TItem>
 > = FilterItemByFields<TItem, TQuery['fields']>;
+
+/**
+ * Value type of the items aggregate data response.
+ */
+export type ItemsAggregateDataResponse<
+  TItem extends Item<ItemData>,
+  TQuery extends ItemsAggregateQuery<TItem>
+> = FilterItemsAggregateByFields<TItem, TQuery['aggregate']>;
 
 /**
  * Value type of the item meta response.

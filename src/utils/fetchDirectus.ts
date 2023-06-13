@@ -7,7 +7,7 @@ import type { Client, Maybe, MaybeValue } from '../types';
 type FetchOptions = {
   method: 'GET' | 'SEARCH' | 'POST' | 'PATCH' | 'DELETE';
   path: string;
-  params?: Maybe<Record<string, string>>;
+  params?: Maybe<Record<string, string>> | string;
   data?: MaybeValue<Record<string, any>>;
 };
 

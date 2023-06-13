@@ -40,9 +40,18 @@ export type ItemQuery<TItem extends Item<ItemData>> = DataQuery<TItem> & {
 };
 
 /**
+ * Handle item keys that start with a hyphen (for desc sorting).
+ */
+export type HyphenPrefixProperties<T> = {
+  [K in keyof T as `-${string & K}`]: T[K];
+};
+
+export type MaybeHyphenPrefixed<T> = T & HyphenPrefixProperties<T>;
+
+/**
  * Value type of the sort query.
  */
-export type SortQuery<TItem extends Item<ItemData>> = {
+export type SortQuery<TItem extends MaybeHyphenPrefixed<Item<ItemData>>> = {
   [TKey in keyof Omit<TItem, '__item__' | '__relation__'>]?: Maybe<
     TItem[TKey] extends Relation<Item<ItemData>>[]
       ? true | FieldsQuery<TItem[TKey][number]>
@@ -56,12 +65,34 @@ export type SortQuery<TItem extends Item<ItemData>> = {
  * Value type of the items query.
  */
 export type ItemsQuery<TItem extends Item<ItemData>> = ItemQuery<TItem> & {
-  sort?: Maybe<SortQuery<TItem>>;
+  sort?: Maybe<SortQuery<MaybeHyphenPrefixed<TItem>>>;
   limit?: Maybe<number>;
   offset?: Maybe<number>;
   page?: Maybe<number>;
   meta?: Maybe<keyof ItemMeta | '*'>;
-  // groupBy?: string | string[]; // TODO:
-  // aggregate?: Aggregate; // TODO:
   // alias?: Record<string, string>; // TODO:
+};
+
+/**
+ * Value type of the aggregate fields query.
+ */
+export type FieldsAggregateQuery<TItem extends Item<ItemData>> = {
+  [TKey in keyof Omit<TItem, '__item__' | '__relation__'>]?: true;
+};
+
+/**
+ * Value type of the aggregate query.
+ * See: https://docs.directus.io/reference/query.html#aggregation-grouping
+ */
+export type Aggregate<TItem extends Item<ItemData>> = {
+  // Counts how many items there are
+  count?: FieldsAggregateQuery<TItem> | '*';
+};
+
+/**
+ * Value type of the items aggregate query.
+ */
+export type ItemsAggregateQuery<TItem extends Item<ItemData>> = {
+  // groupBy?: string | string[]; // TODO:
+  aggregate: Aggregate<TItem>;
 };
