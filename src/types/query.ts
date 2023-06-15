@@ -6,13 +6,29 @@ import type { Maybe } from './utils';
  * Value type of the fields query.
  */
 export type FieldsQuery<TItem extends Item<ItemData>> = {
-  [TKey in keyof Omit<TItem, '__item__' | '__relation__'>]?: Maybe<
+  [TKey in keyof Omit<
+    WithWildcardItem<TItem>,
+    '__item__' | '__relation__'
+  >]?: Maybe<
     TItem[TKey] extends Relation<Item<ItemData>>[]
       ? true | '*' | FieldsQuery<TItem[TKey][number]>
       : TItem[TKey] extends Relation<Item<ItemData>> | null
       ? true | '*' | FieldsQuery<NonNullable<TItem[TKey]>>
+      : TKey extends '*'
+      ? true | RecursiveWilthCard<TItem[TKey]>
       : true
   >;
+};
+
+/**
+ * Accepts wildcard as query key of item.
+ */
+export type WithWildcardItem<TItemData extends ItemData> = TItemData & {
+  '*': true;
+};
+
+export type RecursiveWilthCard<T> = {
+  '*': true | RecursiveWilthCard<T>;
 };
 
 /**

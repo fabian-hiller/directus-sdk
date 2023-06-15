@@ -17,3 +17,15 @@ export type MaybeArray<T> = T | T[];
  * Returns an optional promise type.
  */
 export type MaybePromise<T> = T | Promise<T>;
+
+/**
+ * List of primitive types.
+ */
+export type Primitive =
+  | string
+  | number
+  | boolean
+  | null
+  | undefined
+  | bigint
+  | symbol;
