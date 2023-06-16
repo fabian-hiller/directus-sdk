@@ -22,6 +22,7 @@ import { fetchDirectus, getBasePath, getDataQueryParams } from '../utils';
  *
  * @returns The item.
  */
+// @ts-expect-error: Type instantiation is excessively deep and possibly infinite
 export async function updateItem<
   TCollections extends Collections,
   TCollection extends GetCollection<TCollections>,

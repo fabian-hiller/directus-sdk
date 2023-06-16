@@ -25,6 +25,7 @@ import {
  *
  * @returns The item.
  */
+// @ts-expect-error: Type instantiation is excessively deep and possibly infinite
 export async function readItem<
   TCollections extends Collections,
   TCollection extends GetCollection<TCollections>,
