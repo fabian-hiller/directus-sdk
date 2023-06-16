@@ -73,6 +73,7 @@ export async function readItems<
 > {
   // If arg3 is an array, read each by key
   if (Array.isArray(arg3)) {
+    // @ts-expect-error: Type instantiation is excessively deep and possibly infinite
     return Promise.all(
       arg3.map((key) =>
         readItem<TCollections, TCollection, TItem, TQuery>(

@@ -26,5 +26,6 @@ export async function createUsers<
   data: ItemDataRequest<TItem>[],
   query?: TQuery
 ): Promise<ItemDataResponse<TItem, TQuery>[]> {
+  // @ts-expect-error: Excessive stack depth comparing types
   return createItems(client, 'directus_users', data, query);
 }
