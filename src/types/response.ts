@@ -18,9 +18,13 @@ export type TopLevelFields<TItem> = {
 };
 
 /**
- * Returns the top level fields of an item.
+ * Returns the top level fields of an item recursively.
  */
-export type RecursiveTopLevelFields<TItem, Recursive extends '*' | true> = {
+export type RecursiveTopLevelFields<
+  TItem,
+  TFields,
+  Recursive extends { [TKey in keyof TFields]: any } | true
+> = {
   [TKey in keyof Omit<
     TItem,
     '__item__' | '__relation__'
@@ -35,7 +39,10 @@ export type FilterItemByFields<TItem, TFields> = '*' extends keyof TFields
       TItem,
       RecursiveTopLevelFields<
         TItem,
-        '*' extends keyof TFields['*'] ? '*' : true
+        TFields['*'],
+        '*' extends keyof TFields['*']
+          ? { [TKey in keyof TFields['*']]: TFields['*'][TKey] }
+          : true
       >
     >
   : // If fields are undefined, filter by top level fields
